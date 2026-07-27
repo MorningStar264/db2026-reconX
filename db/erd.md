@@ -1,6 +1,4 @@
 # TICKET-ADV006 — ER model (8 entities)
-
-```mermaid
 erDiagram
     COUNTERPARTIES ||--o{ TRADES : "executes"
     INSTRUMENTS    ||--o{ TRADES : "covers"
@@ -92,4 +90,3 @@ erDiagram
         boolean enabled
         timestamp created_at
     }
-```
