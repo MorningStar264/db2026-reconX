@@ -1,27 +1,52 @@
-C4Container
-    title C4 Container — ReconX
+```mermaid
+C4Component
+    title C4 Component — recon-service API
 
-    Person(user, "User", "Trader / Analyst / Admin")
-    System_Ext(omsKafka, "Internal OMS", "Upstream trade source")
-    System_Ext(sso, "Corporate SSO", "OIDC IdP")
+    Container_Ext(reactSpa, "Recon UI", "React")
+    ContainerDb_Ext(postgres, "PostgreSQL")
+    ContainerQueue_Ext(kafka, "Kafka")
 
-    System_Boundary(reconxBoundary, "ReconX") {
-        Container(reactSpa, "Recon UI", "React 19 + Vite", "Single-page app. Live trade feed via SSE; trades + breaks tables; admin views.")
-        Container(api, "recon-service API", "Java 25 + Spring Boot 3", "REST API. JWT auth, RBAC, validation, exposes /actuator/prometheus.")
-        Container(reconEngine, "Reconciliation Engine", "Spring + CompletableFuture", "Async batch + streaming match logic. Writes recon_breaks.")
-        ContainerDb(postgres, "PostgreSQL 16", "Liquibase-managed", "Partitioned trades, recon_breaks, audit_log, mat. views.")
-        ContainerQueue(kafka, "Apache Kafka", "3 topics + DLQs", "trade-events, recon-results, system-alerts. DLQ per topic.")
-        Container(prom, "Prometheus", "TSDB", "Scrapes the API every 15s.")
-        Container(graf, "Grafana", "Dashboard", "Pre-provisioned dashboards.")
+    Container_Boundary(api, "recon-service API") {
+        Component(authCtl, "AuthController", "Spring REST", "/api/auth/login, /refresh")
+        Component(tradeCtl, "TradeController", "Spring REST", "/api/v1/trades CRUD")
+        Component(reconCtl, "ReconController", "Spring REST", "/api/v1/recon/breaks")
+        Component(auditCtl, "AuditController", "Spring REST", "/api/v1/audit (read-only)")
+
+        Component(jwtFilter, "JwtAuthFilter", "OncePerRequestFilter", "Parses + validates JWT, sets SecurityContext")
+        Component(rbac, "MethodSecurity", "@PreAuthorize", "Role gate per endpoint")
+
+        Component(tradeSvc, "TradeService", "@Service", "Trade lifecycle business rules")
+        Component(reconSvc, "ReconciliationService", "@Service", "Match + break detection")
+        Component(auditSvc, "AuditService", "@Service", "Writes audit_log via trigger or app-layer hook")
+
+        Component(tradeRepo, "TradeRepository", "JpaRepository + Specs", "Paged + filtered queries")
+        Component(reconRepo, "ReconBreakRepository", "JpaRepository", "Break queries")
+        Component(auditRepo, "AuditRepository", "JpaRepository", "Read-only audit queries")
+
+        Component(producer, "TradeEventProducer", "KafkaTemplate", "Publishes trade-events on commit")
+        Component(consumer, "ReconResultConsumer", "@KafkaListener", "Consumes recon-results from engine")
     }
 
-    Rel(user, reactSpa, "Uses", "HTTPS")
-    Rel(reactSpa, api, "REST + SSE", "HTTPS / JSON")
-    Rel(reactSpa, sso, "Login (OIDC)", "HTTPS")
-    Rel(api, postgres, "Reads + writes", "JDBC")
-    Rel(api, kafka, "Publishes trade-events", "Kafka protocol")
-    Rel(reconEngine, kafka, "Consumes trade-events", "Kafka protocol")
-    Rel(reconEngine, postgres, "Writes recon_breaks", "JDBC")
-    Rel(omsKafka, kafka, "Streams trades", "Kafka MirrorMaker")
-    Rel(prom, api, "Scrapes /actuator/prometheus", "HTTPS")
-    Rel(graf, prom, "Queries", "HTTPS / PromQL")
+    Rel(reactSpa, authCtl, "POST /login", "HTTPS")
+    Rel(reactSpa, tradeCtl, "REST", "HTTPS + JWT")
+    Rel(reactSpa, reconCtl, "REST", "HTTPS + JWT")
+    Rel(reactSpa, auditCtl, "REST", "HTTPS + JWT")
+
+    Rel(jwtFilter, rbac, "Sets SecurityContext")
+    Rel(tradeCtl, tradeSvc, "calls")
+    Rel(reconCtl, reconSvc, "calls")
+    Rel(auditCtl, auditSvc, "calls")
+
+    Rel(tradeSvc, tradeRepo, "uses")
+    Rel(reconSvc, reconRepo, "uses")
+    Rel(auditSvc, auditRepo, "uses")
+
+    Rel(tradeRepo, postgres, "JDBC")
+    Rel(reconRepo, postgres, "JDBC")
+    Rel(auditRepo, postgres, "JDBC")
+
+    Rel(tradeSvc, producer, "emits event")
+    Rel(producer, kafka, "publish trade-events")
+    Rel(consumer, kafka, "subscribe recon-results")
+    Rel(consumer, reconSvc, "callback")
+'''
