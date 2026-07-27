@@ -1,4 +1,3 @@
-```mermaid
 C4Container
     title C4 Container — ReconX
 
@@ -26,4 +25,4 @@ C4Container
     Rel(omsKafka, kafka, "Streams trades", "Kafka MirrorMaker")
     Rel(prom, api, "Scrapes /actuator/prometheus", "HTTPS")
     Rel(graf, prom, "Queries", "HTTPS / PromQL")
-'''
+
