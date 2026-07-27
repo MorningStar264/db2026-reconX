@@ -27,4 +27,4 @@ C4Context
     Rel(reconx, emailGateway, "Sends break notifications", "SMTP")
     Rel(reconx, ssoIdP, "Validates user", "OIDC, HTTPS")
     Rel(grafana, reconx, "Scrapes /actuator/prometheus", "HTTPS")
-'''
+```
