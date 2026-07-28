@@ -75,6 +75,11 @@ public final class EquityTrade implements TradeType {
         }
     }
     @Override
+public String toString() {
+    return "EquityTrade[ref=%s, symbol=%s, qty=%s, price=%s %s, side=%s]"
+            .formatted(tradeRef, instrumentSymbol, quantity, price, currency.getCurrencyCode(), side);
+}
+    @Override
 public boolean equals(Object o) {
     return (o instanceof EquityTrade other) && tradeRef.equals(other.tradeRef);
 }
