@@ -5,6 +5,25 @@ import java.time.LocalDate;
 import java.util.Currency;
 import java.util.Objects;
 
+/**
+ * ============================================================================
+ * FXTrade
+ *
+ * WHAT:    Immutable implementation of {@link TradeType} representing a
+ *          foreign exchange (FX) trade. Stores the two currencies involved,
+ *          the notional amount, exchange rate, trade side, and settlement
+ *          information required for reconciliation.
+ * HOW:     Constructed through the nested {@link Builder}, which validates all
+ *          required fields and business rules before creating the immutable
+ *          trade instance.
+ * WHY:     Immutability and validation ensure that only valid FX trades enter
+ *          the reconciliation engine, preventing invalid currency pairs or
+ *          exchange rates from affecting reconciliation results.
+ * OBSERVE: Building a trade with identical currencies or a non-positive
+ *          exchange rate results in an {@link IllegalStateException}.
+ * ============================================================================
+ */
+
 public final class FXTrade implements TradeType {
 
     private final TradeRef tradeRef;
