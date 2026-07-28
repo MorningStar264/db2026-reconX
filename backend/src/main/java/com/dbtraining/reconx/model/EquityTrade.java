@@ -5,6 +5,24 @@ import java.time.LocalDate;
 import java.util.Currency;
 import java.util.Objects;
 
+/**
+ * ============================================================================
+ * EquityTrade
+ *
+ * WHAT:    Immutable implementation of {@link TradeType} representing an
+ *          equity (cash share) trade. Stores trade details such as the
+ *          instrument symbol, quantity, price, currency, and trade side.
+ * HOW:     Constructed through the nested {@link Builder}, which validates all
+ *          mandatory fields and business rules before creating the immutable
+ *          trade instance.
+ * WHY:     Immutability and validation ensure that only complete and
+ *          consistent equity trades are processed by the reconciliation
+ *          engine, preventing invalid market data from affecting results.
+ * OBSERVE: Building a trade with a non-positive quantity or price results in
+ *          an {@link IllegalStateException}.
+ * ============================================================================
+ */
+
 public final class EquityTrade implements TradeType {
 
     private final TradeRef tradeRef;

@@ -5,6 +5,23 @@ import java.time.LocalDate;
 import java.util.Currency;
 import java.util.Objects;
 
+/**
+ * ============================================================================
+ * BondTrade
+ *
+ * WHAT:    Immutable implementation of {@link TradeType} representing a
+ *          fixed-income bond trade. Stores bond-specific information such as
+ *          ISIN, face value, coupon rate, and maturity date.
+ * HOW:     Built using the nested {@link Builder}, which validates required
+ *          fields and business rules before creating the immutable instance.
+ * WHY:     Immutability and validation ensure that only consistent bond trades
+ *          enter the reconciliation engine, preventing invalid market data
+ *          from affecting reconciliation results.
+ * OBSERVE: Attempting to build a trade with a maturity date before the trade
+ *          date results in an {@link IllegalStateException}.
+ * ============================================================================
+ */
+
 public final class BondTrade implements TradeType {
 
     private final TradeRef tradeRef;

@@ -11,6 +11,21 @@ import java.util.stream.Collectors;
 
 /**
  * ============================================================================
+ * GlobalExceptionHandler
+ *
+ * WHAT:    Centralized exception handler for the ReconX REST API.
+ * HOW:     Uses Spring's {@link RestControllerAdvice} and
+ *          {@link ExceptionHandler} methods to translate exceptions into
+ *          RFC 7807 {@link ProblemDetail} responses with appropriate HTTP
+ *          status codes.
+ * WHY:     Centralizing exception handling ensures that all API endpoints
+ *          return consistent, structured error responses without duplicating
+ *          error-handling logic in individual controllers.
+ * ============================================================================
+ */
+
+/**
+ * ============================================================================
  * TICKET-ADV062 — RFC 7807 ProblemDetail for every ReconException
  *
  * Maps each domain exception subtype to the right HTTP status, with a
