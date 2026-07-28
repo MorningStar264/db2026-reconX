@@ -27,3 +27,10 @@
     <include file="changes/008-seed.xml"          relativeToChangelogFile="true"/>
 
 </databaseChangeLog>
+<changeSet id="tag-release-1-0" author="trainer">
+    <tagDatabase tag="release-1.0"/>
+</changeSet>
+
+<changeSet id="tag-release-1-1" author="trainer">
+    <tagDatabase tag="release-1.1"/>
+</changeSet>
