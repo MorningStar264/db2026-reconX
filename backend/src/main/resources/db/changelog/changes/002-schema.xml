@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
  ============================================================================
- TICKET-ADV006 — Core 8-entity ER model
+ Core 8-entity ER model
  WHAT:    Counterparties, instruments, trades, settlements, recon_breaks,
           recon_jobs, audit_log, users. trades is partitioned in 004; here it
           is the non-partitioned base (H2 fallback) — see preconditions.
@@ -18,7 +18,7 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                             http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.27.xsd">
 
-    <!-- ADV006 — counterparties -->
+    <!-- TICKET-ADV006 — counterparties -->
     <changeSet id="002-create-counterparties" author="trainer">
         <createTable tableName="counterparties">
             <column name="id" type="BIGINT" autoIncrement="true">
@@ -34,7 +34,7 @@
         </rollback>
     </changeSet>
 
-    <!-- ADV006 — instruments -->
+    <!-- TICKET-ADV006 — instruments -->
     <changeSet id="002-create-instruments" author="trainer">
         <createTable tableName="instruments">
             <column name="id" type="BIGINT" autoIncrement="true">
@@ -51,7 +51,7 @@
         </rollback>
     </changeSet>
 
-    <!-- ADV006 — trades (non-partitioned base; 004 attaches partitions on Postgres) -->
+    <!-- TICKET-ADV006 — trades (non-partitioned base; 004 attaches partitions on Postgres) -->
     <changeSet id="002-create-trades" author="trainer">
         <createTable tableName="trades">
             <column name="id" type="BIGINT" autoIncrement="true">
@@ -87,7 +87,7 @@
         </rollback>
     </changeSet>
 
-    <!-- ADV006 — settlements -->
+    <!-- TICKET-ADV006 — settlements -->
     <changeSet id="002-create-settlements" author="trainer">
         <createTable tableName="settlements">
             <column name="id" type="BIGINT" autoIncrement="true">
