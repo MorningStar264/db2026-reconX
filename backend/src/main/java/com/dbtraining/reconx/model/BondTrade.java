@@ -77,6 +77,11 @@ public final class BondTrade implements TradeType {
             return new BondTrade(this);
         }
     }
+    @Override public String toString() {
+    return "BondTrade[ref=%s, isin=%s, face=%s %s, coupon=%s, maturity=%s, side=%s]"
+            .formatted(tradeRef, isin, faceValue, currency.getCurrencyCode(),
+                       couponRate, maturityDate, side);
+}
     @Override public boolean equals(Object o) {
     return (o instanceof BondTrade other) && tradeRef.equals(other.tradeRef);
 }

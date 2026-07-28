@@ -71,6 +71,11 @@ public final class FXTrade implements TradeType {
             return new FXTrade(this);
         }
     }
+    @Override public String toString() {
+    return "FXTrade[ref=%s, %s/%s, notional=%s %s, rate=%s, side=%s]"
+            .formatted(tradeRef, ccy1.getCurrencyCode(), ccy2.getCurrencyCode(),
+                       notionalCcy1, ccy1.getCurrencyCode(), fxRate, side);
+}
     @Override public boolean equals(Object o) {
     return (o instanceof FXTrade other) && tradeRef.equals(other.tradeRef);
 }
