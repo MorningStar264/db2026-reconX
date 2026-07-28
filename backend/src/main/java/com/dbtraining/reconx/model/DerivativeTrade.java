@@ -175,5 +175,9 @@ public final class DerivativeTrade implements TradeType {
                 throw new IllegalStateException("expiry cannot be before tradeDate");
             return new DerivativeTrade(this);
         }
-    }s
+    }
+    @Override public boolean equals(Object o) {
+    return (o instanceof DerivativeTrade other) && tradeRef.equals(other.tradeRef);
+}
+@Override public int hashCode() { return tradeRef.hashCode(); }
 }
