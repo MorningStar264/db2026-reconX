@@ -4,6 +4,24 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Map;
 
+/**
+ * ============================================================================
+ * TradeFactory
+ *
+ * WHAT:    Factory class responsible for creating concrete {@link TradeType}
+ *          instances from generic input data.
+ * HOW:     Uses the supplied asset class to select the appropriate builder and
+ *          constructs the corresponding immutable trade implementation after
+ *          converting the input values to their required types.
+ * WHY:     Centralizing trade creation keeps object construction consistent,
+ *          avoids duplication, and provides a single entry point for creating
+ *          validated trade instances from external data sources.
+ * OBSERVE: Passing {@code "EQUITY"} creates an {@link EquityTrade}, while
+ *          {@code "FX"}, {@code "BOND"}, and {@code "DERIVATIVE"} create their
+ *          respective trade implementations.
+ * ============================================================================
+ */
+
 public final class TradeFactory {
 
     private TradeFactory() { }

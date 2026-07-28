@@ -6,6 +6,26 @@ import java.time.LocalDate;
 import java.util.Currency;
 import java.util.Objects;
 
+/**
+ * ============================================================================
+ * DerivativeTrade
+ *
+ * WHAT:    Immutable implementation of {@link TradeType} representing a
+ *          derivative contract. Stores derivative-specific information such as
+ *          the underlying asset, strike price, quantity, expiry date, and
+ *          option type.
+ * HOW:     Constructed through the nested {@link Builder}, which validates all
+ *          mandatory fields and business rules before creating the immutable
+ *          trade instance.
+ * WHY:     Immutability and upfront validation ensure that only valid
+ *          derivative trades participate in reconciliation, preventing
+ *          inconsistent or incomplete contract data from entering the system.
+ * OBSERVE: Building a trade with a non-positive strike price or quantity, or
+ *          an expiry date before the trade date, results in an
+ *          {@link IllegalStateException}.
+ * ============================================================================
+ */
+
 public final class DerivativeTrade implements TradeType {
 
     public enum OptionType { CALL, PUT }
