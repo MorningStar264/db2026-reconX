@@ -1,6 +1,6 @@
 # .github/CODEOWNERS
 *               @MorningStar264 @Anish-Tripathi @ambuj893 @aman-nitw
-backend/        @MorningStar264 @Anish-Tripathi
-frontend/       @MorningStar264 @ambuj893
-db/             @MorningStar264 @aman-nitw
-.github/        @MorningStar264
+backend/        @MorningStar264 @Anish-Tripathi @ambuj893 @aman-nitw
+frontend/       @MorningStar264 @ambuj893 @Anish-Tripathi @aman-nitw
+db/             @MorningStar264 @aman-nitw @ambuj893 @Anish-Tripathi
+.github/        @MorningStar264 @aman-nitw @ambuj893 @Anish-Tripathi
