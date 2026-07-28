@@ -77,4 +77,8 @@ public final class BondTrade implements TradeType {
             return new BondTrade(this);
         }
     }
+    @Override public boolean equals(Object o) {
+    return (o instanceof BondTrade other) && tradeRef.equals(other.tradeRef);
+}
+@Override public int hashCode() { return tradeRef.hashCode(); }
 }
