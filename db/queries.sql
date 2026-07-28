@@ -14,7 +14,7 @@ ORDER BY t.trade_date DESC, t.instrument_id;
 
 
 -- ============================================================================
--- TICKET-ADV011 — Recursive CTE: trade lifecycle (execution -> settlement
+-- Recursive CTE: trade lifecycle (execution -> settlement
 --                -> recon_break -> resolution)
 -- ============================================================================
 WITH RECURSIVE trade_lifecycle AS (
