@@ -16,7 +16,7 @@ spring:
   profiles:
     active: ${SPRING_PROFILES_ACTIVE:dev}
 
-  # ADV012 — Liquibase classpath wiring (the classic starter bug is missing the
+  # TICKET-ADV012 — Liquibase classpath wiring (the classic starter bug is missing the
   # `classpath:` prefix here, which causes a silent skip on JAR builds).
   liquibase:
     change-log: classpath:/db/changelog/db.changelog-master.xml
@@ -29,7 +29,7 @@ spring:
     properties:
       hibernate.format_sql: true
       hibernate.jdbc.time_zone: UTC
-
+      
   # ADV081-ADV082 — Caffeine cache config; per-cache spec overrides the global one.
   cache:
     cache-names: instruments,counterparties
