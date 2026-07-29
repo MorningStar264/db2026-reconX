@@ -40,3 +40,24 @@ class ReconciliationEngineTest {
                 .build();
     }
 }
+
+@Test
+void testReconcile_priceTolerance_withinThreshold() {
+    EquityTrade internal = equity("EQU-20260603-0002", "100.00", "1000");
+    EquityTrade external = equity("EQU-20260603-0002", "100.50", "1000");
+
+    List<ReconResult> out = engine.reconcile(List.of(internal), List.of(external),
+            ReconciliationRule.PRICE_TOLERANCE_1PCT);
+
+    assertThat(out.get(0).status()).isEqualTo(ReconResult.Status.MATCHED);
+}
+
+@Test
+void testReconcile_missingCounterpartyTrade_returnsBreak() {
+    EquityTrade internal = equity("EQU-20260603-0003", "100.00", "1000");
+
+    List<ReconResult> out = engine.reconcile(List.of(internal), List.of(), ReconciliationRule.EXACT);
+
+    assertThat(out.get(0).status()).isEqualTo(ReconResult.Status.BREAK);
+    assertThat(out.get(0).discrepancyType()).isEqualTo("MISSING_EXTERNAL");
+}
