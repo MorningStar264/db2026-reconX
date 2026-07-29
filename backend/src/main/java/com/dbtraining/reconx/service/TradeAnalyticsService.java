@@ -1,6 +1,7 @@
 package com.dbtraining.reconx.service;
 
 import com.dbtraining.reconx.model.EquityTrade;
+import com.dbtraining.reconx.model.Side;
 import com.dbtraining.reconx.model.TradeType;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +27,6 @@ public class TradeAnalyticsService {
                 )));
     }
 
-  
     public Map<String, BigDecimal> vwapByInstrument(List<EquityTrade> equityTrades) {
         Map<String, List<EquityTrade>> bySymbol = equityTrades.stream()
                 .collect(Collectors.groupingBy(EquityTrade::instrumentSymbol));
@@ -49,6 +49,21 @@ public class TradeAnalyticsService {
                     return weighted.divide(totalQty, 4, RoundingMode.HALF_UP);
                 }
         ));
+    }
+
+    public Map<String, BigDecimal> pnlByInstrument(List<EquityTrade> equityTrades) {
+        return equityTrades.stream().collect(Collectors.groupingBy(
+                EquityTrade::instrumentSymbol,
+                Collectors.mapping(
+                        this::pnl,
+                        Collectors.reducing(BigDecimal.ZERO, BigDecimal::add)
+                )
+        ));
+    }
+
+    private BigDecimal pnl(EquityTrade t) {
+        BigDecimal abs = t.price().multiply(t.quantity());
+        return t.side() == Side.SELL ? abs : abs.negate();
     }
 
     private long counterpartyIdOf(TradeType t) {
