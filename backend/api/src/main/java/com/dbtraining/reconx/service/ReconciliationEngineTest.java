@@ -10,9 +10,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * TICKET-ADV040 / TICKET-ADV041 / TICKET-ADV042 — TDD: write the test FIRST, then the impl.
- */
+
 class ReconciliationEngineTest {
 
     private final ReconciliationEngine engine = new ReconciliationEngine();
