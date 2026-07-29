@@ -14,11 +14,7 @@ import java.util.stream.Collectors;
 
 /**
  * ============================================================================
- * TICKET-ADV033 — ReconciliationEngine using Streams (parallel matching)
- * TICKET-ADV037 — CompletableFuture: parallel recon by counterparty
- * TICKET-ADV047 — Edge cases: empty/single/all-mismatched inputs handled
- * TICKET-ADV084 — @Timed exports reconciliation_duration_seconds histogram
- *
+
  * WHAT:    Compares internal trades against external (counterparty) trades and
  *          returns a ReconResult per internal trade (MATCHED or BREAK).
  * HOW:     Index externals by tradeRef, then stream internals and look each
@@ -43,34 +39,80 @@ public class ReconciliationEngine {
 
         Map<String, TradeType> externalByRef = (external == null ? List.<TradeType>of() : external)
                 .stream()
-                .collect(Collectors.toMap(t -> t.tradeRef().value(), Function.identity(), (a, b) -> a));
+                .collect(Collectors.toMap(
+                        t -> t.tradeRef().value(),
+                        Function.identity(),
+                        (a, b) -> a));
 
         return internal.parallelStream()
                 .map(in -> matchOne(in, externalByRef.get(in.tradeRef().value()), rule))
                 .toList();
     }
 
-    private ReconResult matchOne(TradeType internal, TradeType external, ReconciliationRule rule) {
+    /**
+     * TICKET-ADV037
+     * Reconcile trades in parallel by counterparty using CompletableFuture.
+     */
+    public CompletableFuture<List<ReconResult>> reconcileByCounterparty(
+            Map<Long, List<TradeType>> internalByCp,
+            Map<Long, List<TradeType>> externalByCp,
+            ReconciliationRule rule) {
+
+        List<CompletableFuture<List<ReconResult>>> futures =
+                internalByCp.entrySet().stream()
+                        .map(entry ->
+                                CompletableFuture.supplyAsync(() ->
+                                        reconcile(
+                                                entry.getValue(),
+                                                externalByCp.getOrDefault(entry.getKey(), List.of()),
+                                                rule)))
+                        .toList();
+
+        return CompletableFuture
+                .allOf(futures.toArray(CompletableFuture[]::new))
+                .thenApply(v ->
+                        futures.stream()
+                                .flatMap(future -> future.join().stream())
+                                .toList());
+    }
+
+    private ReconResult matchOne(TradeType internal,
+                                 TradeType external,
+                                 ReconciliationRule rule) {
+
         String ref = internal.tradeRef().value();
+
         if (external == null) {
-            return ReconResult.breakResult(ref, "MISSING_EXTERNAL",
+            return ReconResult.breakResult(
+                    ref,
+                    "MISSING_EXTERNAL",
                     "No external trade found for " + ref);
         }
+
         BigDecimal[] iPair = priceQty(internal);
         BigDecimal[] ePair = priceQty(external);
+
         if (rule.matches(iPair[0], iPair[1], ePair[0], ePair[1])) {
             return ReconResult.matched(ref);
         }
-        return ReconResult.breakResult(ref, "VALUE_MISMATCH",
-                "internal=%s/%s external=%s/%s".formatted(iPair[0], iPair[1], ePair[0], ePair[1]));
+
+        return ReconResult.breakResult(
+                ref,
+                "VALUE_MISMATCH",
+                "internal=%s/%s external=%s/%s"
+                        .formatted(iPair[0], iPair[1], ePair[0], ePair[1]));
     }
 
     private BigDecimal[] priceQty(TradeType t) {
         return switch (t) {
-            case com.dbtraining.reconx.model.EquityTrade e     -> new BigDecimal[]{e.price(),  e.quantity()};
-            case com.dbtraining.reconx.model.FXTrade fx        -> new BigDecimal[]{fx.fxRate(), fx.notionalCcy1()};
-            case com.dbtraining.reconx.model.BondTrade b       -> new BigDecimal[]{b.couponRate(), b.faceValue()};
-            case com.dbtraining.reconx.model.DerivativeTrade d -> new BigDecimal[]{d.strike(), d.quantity()};
+            case com.dbtraining.reconx.model.EquityTrade e ->
+                    new BigDecimal[]{e.price(), e.quantity()};
+            case com.dbtraining.reconx.model.FXTrade fx ->
+                    new BigDecimal[]{fx.fxRate(), fx.notionalCcy1()};
+            case com.dbtraining.reconx.model.BondTrade b ->
+                    new BigDecimal[]{b.couponRate(), b.faceValue()};
+            case com.dbtraining.reconx.model.DerivativeTrade d ->
+                    new BigDecimal[]{d.strike(), d.quantity()};
         };
     }
 }
