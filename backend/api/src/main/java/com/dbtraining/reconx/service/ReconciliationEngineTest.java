@@ -10,7 +10,6 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-
 class ReconciliationEngineTest {
 
     private final ReconciliationEngine engine = new ReconciliationEngine();
