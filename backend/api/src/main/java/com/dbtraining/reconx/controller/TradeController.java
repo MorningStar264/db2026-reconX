@@ -1,109 +1,47 @@
 package com.dbtraining.reconx.controller;
 
-import com.dbtraining.reconx.domain.Trade;
+import com.dbtraining.reconx.domain.TradeStatus;
 import com.dbtraining.reconx.dto.PagedResponse;
 import com.dbtraining.reconx.dto.TradeMapper;
-import com.dbtraining.reconx.dto.TradeRequest;
 import com.dbtraining.reconx.dto.TradeResponse;
 import com.dbtraining.reconx.service.TradeQueryService;
-import io.swagger.v3.oas.annotations.Operation;
-import jakarta.validation.Valid;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.URI;
 import java.time.LocalDate;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/v1/trades")
 public class TradeController {
 
-    private final TradeQueryService service;
+    private final TradeQueryService queryService;
     private final TradeMapper mapper;
 
-    public TradeController(TradeQueryService service, TradeMapper mapper) {
-        this.service = service;
-        this.mapper = mapper;
+    public TradeController(TradeQueryService queryService, TradeMapper mapper) {
+        this.queryService = queryService;
+        this.mapper       = mapper;
     }
-
+     
     @GetMapping
-    @Operation(summary = "List trades — paginated, filterable, sortable")
     public PagedResponse<TradeResponse> list(
-            @RequestParam(required = false)
-            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-            LocalDate from,
-
-            @RequestParam(required = false)
-            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-            LocalDate to,
-
-            @RequestParam(required = false)
-            String status,
-
-            @RequestParam(required = false)
-            Long counterpartyId,
-
-            @PageableDefault(
-                    size = 20,
-                    sort = "tradeDate",
-                    direction = Sort.Direction.DESC
-            )
-            Pageable pageable
+        @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
+        @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to,
+        @RequestParam(required = false) TradeStatus status,
+        @RequestParam(required = false) Long counterpartyId,
+        @PageableDefault(size = 20, sort = "tradeDate", direction = Sort.Direction.DESC)
+        Pageable pageable
     ) {
-        Page<Trade> page = service.list(
-                from,
-                to,
-                status,
-                counterpartyId,
-                pageable
-        );
-
-        return PagedResponse.from(page, mapper::toResponse);
+        var page = queryService.search(from, to, status, counterpartyId, pageable);
+        return PagedResponse.of(page, mapper::toResponse);
     }
-
-    @PostMapping
-    @Operation(summary = "Create a trade")
-    public ResponseEntity<TradeResponse> create(
-            @Valid @RequestBody TradeRequest req,
-            @AuthenticationPrincipal Object principal
-    ) {
-        String actor = String.valueOf(principal);
-        Trade saved = service.create(req, actor);
-
-        return ResponseEntity
-                .created(URI.create("/api/v1/trades/" + saved.getId()))
-                .body(mapper.toResponse(saved));
-    }
-
-    @PutMapping("/{id}")
-    @Operation(summary = "Full update of a trade")
-    public TradeResponse update(
-            @PathVariable Long id,
-            @Valid @RequestBody TradeRequest req,
-            @AuthenticationPrincipal Object principal
-    ) {
-        return mapper.toResponse(
-                service.update(id, req, String.valueOf(principal))
-        );
-    }
-
-    @PatchMapping("/{id}/status")
-    @Operation(summary = "Update only the status field")
-    public TradeResponse updateStatus(
-            @PathVariable Long id,
-            @RequestBody Map<String, String> body,
-            @AuthenticationPrincipal Object principal
-    ) {
-        String status = body.get("status");
-        return mapper.toResponse(
-                service.updateStatus(id, status, String.valueOf(principal))
-        );
-    }
+    @DeleteMapping("/{id}")
+    @Operation(summary = "Soft delete (sets deleted_at)")
+    public ResponseEntity<Void> delete(@PathVariable Long id,
+                                   @AuthenticationPrincipal Object principal) {
+    service.softDelete(id, String.valueOf(principal));
+    return ResponseEntity.noContent().build();
+}
 }
