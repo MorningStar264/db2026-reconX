@@ -72,7 +72,9 @@ public class SecurityConfig {
                 .headers(h -> h.frameOptions(f -> f.disable())) // allow /h2 in dev
                 .authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
                 .build();
+                .requestMatchers("/v1/recon/**").hasAnyRole("RECON_ANALYST","ADMIN")
     }
+    
 
     // TODO(TICKET-ADV073): @Bean PasswordEncoder (BCrypt).
     // TODO(TICKET-ADV073): register JwtAuthenticationFilter before

@@ -50,6 +50,13 @@ public class ReconController {
         return Collections.emptyList();
     }
 
+    @GetMapping("/jobs/{jobId}/results")
+    @Operation(summary = "Get results for a recon job")
+    public List<ReconBreak> results(@PathVariable String jobId) {
+    // The trainer-copy stub returns all current open breaks.
+         return breaks.findAll();
+}
+
     @PutMapping("/results/{id}/resolve")
     @Operation(summary = "Mark a recon break as RESOLVED with a note")
     public ResponseEntity<ReconBreak> resolve(@PathVariable Long id,
