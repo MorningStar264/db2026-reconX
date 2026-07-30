@@ -1,32 +1,54 @@
 spring:
   profiles:
     active: ${SPRING_PROFILES_ACTIVE:dev}
+
   application:
     name: reconx-api
+
+  jmx:
+    enabled: true
+
   jpa:
-    open-in-view: false                   # default true — turn off in services
+    open-in-view: false # default true — turn off in services
     properties:
       hibernate:
         jdbc.time_zone: UTC
         format_sql: true
+
   liquibase:
-    change-log: classpath:db/changelog/db.changelog-master.xml  # MUST have classpath: prefix
+    change-log: classpath:db/changelog/db.changelog-master.xml # MUST have classpath: prefix
+
   sql:
     init:
-      mode: never                         # Liquibase owns the schema, not data.sql
+      mode: never # Liquibase owns the schema, not data.sql
+
+  # TICKET-ADV081-TICKET-ADV082 — Caffeine cache config; per-cache spec overrides the global one.
+  cache:
+    cache-names: instruments,counterparties
+    caffeine:
+      spec: maximumSize=500,expireAfterWrite=5m
 
 management:
   endpoints:
     web:
       exposure:
-        include: health, info, metrics, prometheus
+        include: health, info, metrics, prometheus, caches
+
   endpoint:
     health:
       show-details: when-authorized
       probes:
         enabled: true
 
+  # TICKET-ADV084 — Enable histogram buckets for reconciliation.duration
+  metrics:
+    distribution:
+      percentiles-histogram:
+        reconciliation:
+          duration: true
+
 server:
   port: 8080
+
   servlet:
     context-path: /api
