@@ -1,15 +1,20 @@
 package com.dbtraining.reconx.controller;
 
-import com.dbtraining.reconx.domain.TradeStatus;
+import com.dbtraining.reconx.domain.Trade;
 import com.dbtraining.reconx.dto.PagedResponse;
 import com.dbtraining.reconx.dto.TradeMapper;
 import com.dbtraining.reconx.dto.TradeResponse;
 import com.dbtraining.reconx.service.TradeQueryService;
+import io.swagger.v3.oas.annotations.Operation;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
 
@@ -17,24 +22,46 @@ import java.time.LocalDate;
 @RequestMapping("/v1/trades")
 public class TradeController {
 
-    private final TradeQueryService queryService;
+    private final TradeQueryService service;
     private final TradeMapper mapper;
 
-    public TradeController(TradeQueryService queryService, TradeMapper mapper) {
-        this.queryService = queryService;
-        this.mapper       = mapper;
+    public TradeController(TradeQueryService service, TradeMapper mapper) {
+        this.service = service;
+        this.mapper = mapper;
     }
 
     @GetMapping
+    @Operation(summary = "List trades — paginated, filterable, sortable")
     public PagedResponse<TradeResponse> list(
-        @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
-        @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to,
-        @RequestParam(required = false) TradeStatus status,
-        @RequestParam(required = false) Long counterpartyId,
-        @PageableDefault(size = 20, sort = "tradeDate", direction = Sort.Direction.DESC)
-        Pageable pageable
+            @RequestParam(required = false)
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+            LocalDate from,
+
+            @RequestParam(required = false)
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+            LocalDate to,
+
+            @RequestParam(required = false)
+            String status,
+
+            @RequestParam(required = false)
+            Long counterpartyId,
+
+            @PageableDefault(
+                    size = 20,
+                    sort = "tradeDate",
+                    direction = Sort.Direction.DESC
+            )
+            Pageable pageable
     ) {
-        var page = queryService.search(from, to, status, counterpartyId, pageable);
-        return PagedResponse.of(page, mapper::toResponse);
+        Page<Trade> page = service.list(
+                from,
+                to,
+                status,
+                counterpartyId,
+                pageable
+        );
+
+        return PagedResponse.from(page, mapper::toResponse);
     }
 }
