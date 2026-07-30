@@ -59,4 +59,12 @@ public class ReconController {
         //   when the id is unknown.
         throw new UnsupportedOperationException("TICKET-ADV070");
     }
+
+    @PostMapping("/run")
+@Operation(summary = "Trigger a reconciliation job (async)")
+public ResponseEntity<Map<String, String>> runRecon(@Valid @RequestBody ReconRunRequest req) {
+    String jobId = UUID.randomUUID().toString();
+    // In the full impl this writes a row to recon_jobs and a worker picks it up.
+    return ResponseEntity.accepted().body(Map.of("jobId", jobId, "status", "QUEUED"));
+}
 }
