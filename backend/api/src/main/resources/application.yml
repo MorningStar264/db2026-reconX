@@ -1,16 +1,23 @@
 spring:
   profiles:
     active: ${SPRING_PROFILES_ACTIVE:dev}
+
   application:
     name: reconx-api
+
+  jmx:
+    enabled: true
+
   jpa:
     open-in-view: false # default true — turn off in services
     properties:
       hibernate:
         jdbc.time_zone: UTC
         format_sql: true
+
   liquibase:
     change-log: classpath:db/changelog/db.changelog-master.xml # MUST have classpath: prefix
+
   sql:
     init:
       mode: never # Liquibase owns the schema, not data.sql
@@ -26,6 +33,7 @@ management:
     web:
       exposure:
         include: health, info, metrics, prometheus, caches
+
   endpoint:
     health:
       show-details: when-authorized
@@ -41,5 +49,6 @@ management:
 
 server:
   port: 8080
+
   servlet:
     context-path: /api
