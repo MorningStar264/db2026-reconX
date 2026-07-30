@@ -24,7 +24,7 @@ public class TradeController {
         this.queryService = queryService;
         this.mapper       = mapper;
     }
-
+     
     @GetMapping
     public PagedResponse<TradeResponse> list(
         @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
@@ -37,4 +37,20 @@ public class TradeController {
         var page = queryService.search(from, to, status, counterpartyId, pageable);
         return PagedResponse.of(page, mapper::toResponse);
     }
+    @DeleteMapping("/{id}")
+    @Operation(summary = "Soft delete (sets deleted_at)")
+    public ResponseEntity<Void> delete(@PathVariable Long id,
+                                   @AuthenticationPrincipal Object principal) {
+    service.softDelete(id, String.valueOf(principal));
+    return ResponseEntity.noContent().build();
+}
+@Deprecated(since = "v1.4.0", forRemoval = true)
+@GetMapping(value = "/old-search", produces = MediaType.APPLICATION_JSON_VALUE)
+public ResponseEntity<Void> oldSearch(HttpServletResponse response) {
+    response.setHeader("Deprecation", "true");
+    response.setHeader("Sunset", "Sat, 1 Jul 2026 00:00:00 GMT");
+    response.setHeader("Link",
+            "</api/v1/trades?status=...>; rel=\"successor-version\"");
+    return ResponseEntity.status(HttpStatus.GONE).build();
+}
 }
