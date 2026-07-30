@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.time.LocalDate;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/v1/trades")
@@ -90,6 +91,19 @@ public class TradeController {
     ) {
         return mapper.toResponse(
                 service.update(id, req, String.valueOf(principal))
+        );
+    }
+
+    @PatchMapping("/{id}/status")
+    @Operation(summary = "Update only the status field")
+    public TradeResponse updateStatus(
+            @PathVariable Long id,
+            @RequestBody Map<String, String> body,
+            @AuthenticationPrincipal Object principal
+    ) {
+        String status = body.get("status");
+        return mapper.toResponse(
+                service.updateStatus(id, status, String.valueOf(principal))
         );
     }
 }
