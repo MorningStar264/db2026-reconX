@@ -4,22 +4,28 @@ spring:
   application:
     name: reconx-api
   jpa:
-    open-in-view: false                   # default true — turn off in services
+    open-in-view: false # default true — turn off in services
     properties:
       hibernate:
         jdbc.time_zone: UTC
         format_sql: true
   liquibase:
-    change-log: classpath:db/changelog/db.changelog-master.xml  # MUST have classpath: prefix
+    change-log: classpath:db/changelog/db.changelog-master.xml # MUST have classpath: prefix
   sql:
     init:
-      mode: never                         # Liquibase owns the schema, not data.sql
+      mode: never # Liquibase owns the schema, not data.sql
+
+  # TICKET-ADV081-TICKET-ADV082 — Caffeine cache config; per-cache spec overrides the global one.
+  cache:
+    cache-names: instruments,counterparties
+    caffeine:
+      spec: maximumSize=500,expireAfterWrite=5m
 
 management:
   endpoints:
     web:
       exposure:
-        include: health, info, metrics, prometheus
+        include: health, info, metrics, prometheus, caches
   endpoint:
     health:
       show-details: when-authorized
