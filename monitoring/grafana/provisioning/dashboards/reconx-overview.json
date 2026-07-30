@@ -24,7 +24,7 @@
     },
     {
       "type": "stat",
-      "title": "Open recon breaks (ADV091)",
+      "title": "Open recon breaks (TICKET-ADV091)",
       "datasource": { "type": "prometheus", "uid": "reconx-prometheus" },
       "targets": [{ "expr": "recon_break_count" }],
       "gridPos": { "h": 4, "w": 6, "x": 0, "y": 8 }
