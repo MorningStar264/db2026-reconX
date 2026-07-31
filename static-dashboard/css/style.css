@@ -4,20 +4,21 @@
    responsive breakpoints (desktop -> tablet -> mobile)
    BEM naming: block__element--modifier
    ============================================================================ */
-   :root {
-    --color-primary: #003366;
-    --color-gold:    #C8A951;
-    --color-slate:   #2E5FA3;
-    --color-success: #28a745;
-    --color-warning: #ffc107;
-    --color-danger:  #dc3545;
-    --color-bg:      #ffffff;
-    --color-text:    #1a1a1a;
-    --color-surface: #f5f5f5;
-    --color-border:  #d4d4d4;
-    --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px;
-    --radius:  4px;
-  }
+/* File: static-dashboard/css/style.css — top of file */
+:root {
+  --color-primary: #003366;
+  --color-gold:    #C8A951;
+  --color-slate:   #2E5FA3;
+  --color-success: #28a745;
+  --color-warning: #ffc107;
+  --color-danger:  #dc3545;
+  --color-bg:      #ffffff;
+  --color-text:    #1a1a1a;
+  --color-surface: #f5f5f5;
+  --color-border:  #d4d4d4;
+  --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px;
+  --radius:  4px;
+}
 [data-theme="dark"] {
   --color-bg:      #1a1a1a;
   --color-text:    #f5f5f5;
