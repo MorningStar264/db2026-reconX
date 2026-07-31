@@ -19,6 +19,7 @@
   --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px;
   --radius:  4px;
 }
+/* File: static-dashboard/css/style.css — theme overrides */
 [data-theme="dark"] {
   --color-bg:      #1a1a1a;
   --color-text:    #f5f5f5;
