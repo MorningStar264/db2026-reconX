@@ -1,4 +1,5 @@
-// TICKET-ADV106 / ADV107 — EventSource live feed with prepend + slide-in animation.
+// File: static-dashboard/js/sse.js
+// TICKET-ADV104 / TICKET-ADV105 — EventSource live feed with prepend + slide-in animation.
 (function () {
   const feed = document.getElementById('trade-feed');
   if (!feed) return;
