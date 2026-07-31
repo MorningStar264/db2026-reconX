@@ -1,9 +1,10 @@
+<!-- File: static-dashboard/dashboard.html -->
 <!doctype html>
 <!--
 ============================================================================
-TICKET-ADV098 — CSS Grid page shell (sidebar + header + main + footer)
-TICKET-ADV099 — Semantic HTML5 (header/nav/main/section/article/aside/footer)
-TICKET-ADV100 — ARIA roles + aria-live for the trade feed
+CSS Grid page shell (sidebar + header + main + footer)
+Semantic HTML5 (header/nav/main/section/article/aside/footer)
+ARIA roles + aria-live for the trade feed
 ============================================================================
 -->
 <html lang="en" data-theme="light">
@@ -46,7 +47,7 @@ TICKET-ADV100 — ARIA roles + aria-live for the trade feed
 
     <section aria-labelledby="feed">
       <h2 id="feed">Live trade feed</h2>
-      <!-- TICKET-ADV100 aria-live so screen readers announce new trades -->
+      <!--  aria-live so screen readers announce new trades -->
       <div id="trade-feed" role="status" aria-live="polite" aria-atomic="false"></div>
     </section>
   </main>
