@@ -3,6 +3,7 @@
 import React, { useMemo } from 'react';
 import { withAuth } from '@components/withAuth.jsx';
 import { useTradeStream } from '@hooks/useTradeStream.js';
+import { Profiler } from 'react';
 
 function StatCard({ label, value }) {
   return (
@@ -11,6 +12,10 @@ function StatCard({ label, value }) {
       <p>{value}</p>
     </article>
   );
+}
+function onRender(id, phase, actualDuration, baseDuration) {
+  // eslint-disable-next-line no-console
+  console.log(`[Profiler] ${id} ${phase}  actual=${actualDuration.toFixed(2)}ms  base=${baseDuration.toFixed(2)}ms`);
 }
 
 function Dashboard() {
@@ -40,4 +45,10 @@ function Dashboard() {
   );
 }
 
-export default withAuth(Dashboard);
+export default function Dashboard({ trades }) {
+  return (
+    <Profiler id="TradeDashboard" onRender={onRender}>
+      <DashboardContents trades={trades} />
+    </Profiler>
+  );
+}
