@@ -1,12 +1,24 @@
 spring:
+  main:
+    allow-bean-definition-overriding: true
+
   datasource:
-    url: ${RECONX_DB_URL}                 # no defaults — fail fast if unset
+    url: ${RECONX_DB_URL}
     username: ${RECONX_DB_USER}
     password: ${RECONX_DB_PASSWORD}
+
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: validate
+
+reconx:
+  security:
+    jwt:
+      secret: ${JWT_SECRET:404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970}
+      expiration-minutes: ${JWT_EXPIRATION_MINUTES:1440}
+      issuer: ${JWT_ISSUER:reconx-api}
+
 logging:
   level:
     root: WARN

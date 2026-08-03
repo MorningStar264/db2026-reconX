@@ -9,38 +9,42 @@ spring:
     enabled: true
 
   jpa:
-    open-in-view: false # default true — turn off in services
+    open-in-view: false
     properties:
       hibernate:
         jdbc.time_zone: UTC
         format_sql: true
 
   liquibase:
-    change-log: classpath:db/changelog/db.changelog-master.xml # MUST have classpath: prefix
+    change-log: classpath:db/changelog/db.changelog-master.xml
 
   sql:
     init:
-      mode: never # Liquibase owns the schema, not data.sql
+      mode: never
 
-  # TICKET-ADV081-TICKET-ADV082 — Caffeine cache config; per-cache spec overrides the global one.
   cache:
     cache-names: instruments,counterparties
     caffeine:
       spec: maximumSize=500,expireAfterWrite=5m
+
+# Default JWT configuration
+reconx:
+  security:
+    jwt:
+      secret: "404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970"
+      expiration-minutes: 1440
+      issuer: "reconx-api"
 
 management:
   endpoints:
     web:
       exposure:
         include: health, info, metrics, prometheus, caches
-
   endpoint:
     health:
       show-details: when-authorized
       probes:
         enabled: true
-
-  # TICKET-ADV084 — Enable histogram buckets for reconciliation.duration
   metrics:
     distribution:
       percentiles-histogram:
@@ -49,6 +53,5 @@ management:
 
 server:
   port: 8080
-
   servlet:
     context-path: /api

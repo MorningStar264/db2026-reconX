@@ -9,5 +9,5 @@ import java.util.Optional;
 @Repository
 public interface InstrumentRepository extends JpaRepository<Instrument, Long> {
     Optional<Instrument> findBySymbol(String symbol);
-    Optional<Instrument> findByIsin(String isin);
+    
 }

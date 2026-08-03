@@ -54,7 +54,6 @@ com\dbtraining\reconx\model\EquityTrade$Builder.class
 com\dbtraining\reconx\model\TradeRef.class
 com\dbtraining\reconx\security\JwtAuthenticationFilter.class
 com\dbtraining\reconx\domain\Trade.class
-com\dbtraining\reconx\repository\entity\Trade.class
 com\dbtraining\reconx\model\DerivativeTrade.class
 com\dbtraining\reconx\repository\AuditLogRepository.class
 com\dbtraining\reconx\exception\DuplicateTradeRefException.class
