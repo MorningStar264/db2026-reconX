@@ -51,7 +51,7 @@ class TradeControllerWebMvcTest {
         // (id, tradeRef, instrumentId, instrumentSymbol, counterpartyId, counterpartyName,
         //  assetClass, side, quantity, price, tradeDate, status, createdAt, modifiedAt).
         Instant now = Instant.now();
-        when(tradeService.create(any(), any())).thenReturn(
+        when(tradeService.create(any())).thenReturn(
                 new TradeResponse(
                         42L,
                         "TRD-20260315-9999",
@@ -77,22 +77,20 @@ class TradeControllerWebMvcTest {
                 .andExpect(jsonPath("$.id").value(42))
                 .andExpect(jsonPath("$.tradeRef").value("TRD-20260315-9999"));
     }
-
-    @Test
-    void testCreateTrade_unauthenticated_returns401() throws Exception {
-        mockMvc.perform(post("/api/v1/trades")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(validRequest())))
-                .andExpect(status().isUnauthorized());
-    }
-
-    @Test
-    @WithMockUser(roles = "VIEWER")
-    void testCreateTrade_viewerRole_returns403() throws Exception {
-        mockMvc.perform(post("/api/v1/trades")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(validRequest()))
-                        .with(org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf()))
-                .andExpect(status().isForbidden());
-    }
+}
+@Test
+void testCreateTrade_unauthenticated_returns401() throws Exception {
+    mockMvc.perform(post("/api/v1/trades")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(validRequest())))
+            .andExpect(status().isUnauthorized());
+}
+@Test
+@WithMockUser(roles = "VIEWER")
+void testCreateTrade_viewerRole_returns403() throws Exception {
+    mockMvc.perform(post("/api/v1/trades")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(validRequest()))
+                    .with(org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf()))
+            .andExpect(status().isForbidden());
 }
