@@ -20,4 +20,9 @@ public record ReconResult(
     public static ReconResult breakResult(String tradeRef, String discrepancyType, String details) {
         return new ReconResult(tradeRef, Status.BREAK, discrepancyType, details);
     }
+
+    // Helper method to get status as Status enum (for collectors)
+    public Status status() {
+        return status;
+    }
 }

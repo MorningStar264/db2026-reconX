@@ -8,8 +8,9 @@ C:\Users\ANISH TRIPATHI\OneDrive\Desktop\reconX\db2026-reconX\backend\api\src\ma
 C:\Users\ANISH TRIPATHI\OneDrive\Desktop\reconX\db2026-reconX\backend\api\src\main\java\com\dbtraining\reconx\controller\AuthController.java
 C:\Users\ANISH TRIPATHI\OneDrive\Desktop\reconX\db2026-reconX\backend\api\src\main\java\com\dbtraining\reconx\controller\ReconController.java
 C:\Users\ANISH TRIPATHI\OneDrive\Desktop\reconX\db2026-reconX\backend\api\src\main\java\com\dbtraining\reconx\controller\TradeController.java
-C:\Users\ANISH TRIPATHI\OneDrive\Desktop\reconX\db2026-reconX\backend\api\src\main\java\com\dbtraining\reconx\domain\Instrument.java
+C:\Users\ANISH TRIPATHI\OneDrive\Desktop\reconX\db2026-reconX\backend\api\src\main\java\com\dbtraining\reconx\domain\AssetClass.java
 C:\Users\ANISH TRIPATHI\OneDrive\Desktop\reconX\db2026-reconX\backend\api\src\main\java\com\dbtraining\reconx\domain\Trade.java
+C:\Users\ANISH TRIPATHI\OneDrive\Desktop\reconX\db2026-reconX\backend\api\src\main\java\com\dbtraining\reconx\domain\TradeStatus.java
 C:\Users\ANISH TRIPATHI\OneDrive\Desktop\reconX\db2026-reconX\backend\api\src\main\java\com\dbtraining\reconx\dto\LoginRequest.java
 C:\Users\ANISH TRIPATHI\OneDrive\Desktop\reconX\db2026-reconX\backend\api\src\main\java\com\dbtraining\reconx\dto\LoginResponse.java
 C:\Users\ANISH TRIPATHI\OneDrive\Desktop\reconX\db2026-reconX\backend\api\src\main\java\com\dbtraining\reconx\dto\PagedResponse.java
@@ -71,4 +72,5 @@ C:\Users\ANISH TRIPATHI\OneDrive\Desktop\reconX\db2026-reconX\backend\api\src\ma
 C:\Users\ANISH TRIPATHI\OneDrive\Desktop\reconX\db2026-reconX\backend\api\src\main\java\com\dbtraining\reconx\service\TradeAnalyticsService.java
 C:\Users\ANISH TRIPATHI\OneDrive\Desktop\reconX\db2026-reconX\backend\api\src\main\java\com\dbtraining\reconx\service\TradeHistoryService.java
 C:\Users\ANISH TRIPATHI\OneDrive\Desktop\reconX\db2026-reconX\backend\api\src\main\java\com\dbtraining\reconx\service\TradeLookupService.java
+C:\Users\ANISH TRIPATHI\OneDrive\Desktop\reconX\db2026-reconX\backend\api\src\main\java\com\dbtraining\reconx\service\TradeQueryService.java
 C:\Users\ANISH TRIPATHI\OneDrive\Desktop\reconX\db2026-reconX\backend\api\src\main\java\com\dbtraining\reconx\service\TradeService.java

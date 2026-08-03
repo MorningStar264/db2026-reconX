@@ -2,9 +2,13 @@ package com.dbtraining.reconx.repository;
 
 import com.dbtraining.reconx.repository.entity.Counterparty;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
+@Repository
 public interface CounterpartyRepository extends JpaRepository<Counterparty, Long> {
     Optional<Counterparty> findByLeiCode(String leiCode);
+    Optional<Counterparty> findByName(String name);
+    Optional<Counterparty> findByCode(String code);
 }
