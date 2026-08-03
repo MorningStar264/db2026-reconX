@@ -5,7 +5,7 @@ import java.util.UUID;
 
 /**
  * ============================================================================
- * TICKET-ADV130 — TradeEvent payload (Kafka envelope)
+ * TradeEvent payload (Kafka envelope)
  *
  * WHAT:    Wire format for trade-events Kafka topic. eventId is the
  *          idempotency key; consumers deduplicate by it.
