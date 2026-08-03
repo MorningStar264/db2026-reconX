@@ -6,9 +6,9 @@ import org.springframework.data.jpa.domain.Specification;
 
 import java.time.LocalDate;
 
-public final class TradeSpecification {
+public final class TradeSpecifications {
 
-    private TradeSpecification() {}
+    private TradeSpecifications() {}
 
     public static Specification<Trade> tradeDateBetween(LocalDate from, LocalDate to) {
         return (root, q, cb) -> {
