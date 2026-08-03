@@ -4,7 +4,9 @@ com\dbtraining\reconx\controller\AuditController.class
 com\dbtraining\reconx\ReconxApplication.class
 com\dbtraining\reconx\kafka\TradeEventProducer.class
 com\dbtraining\reconx\model\BondTrade.class
+com\dbtraining\reconx\model\DlqMessage$Builder.class
 com\dbtraining\reconx\audit\AuditProperties.class
+com\dbtraining\reconx\repository\DlqMessageRepository.class
 com\dbtraining\reconx\observability\TradeMetrics.class
 com\dbtraining\reconx\audit\AuditAutoConfiguration.class
 com\dbtraining\reconx\domain\TradeStatus.class
@@ -18,6 +20,8 @@ com\dbtraining\reconx\service\ReconSummary.class
 com\dbtraining\reconx\controller\TradeController.class
 com\dbtraining\reconx\model\EquityTrade.class
 com\dbtraining\reconx\service\ReconSummaryCollector.class
+com\dbtraining\reconx\controller\DlqAdminController.class
+com\dbtraining\reconx\service\TradeAggregator.class
 com\dbtraining\reconx\observability\KafkaHealthIndicator.class
 com\dbtraining\reconx\service\InstrumentService.class
 com\dbtraining\reconx\dto\ReconResult$Status.class
@@ -70,7 +74,9 @@ com\dbtraining\reconx\repository\TradeSpecifications.class
 com\dbtraining\reconx\model\FXTrade$Builder.class
 com\dbtraining\reconx\model\TradeFactory.class
 com\dbtraining\reconx\model\ReconciliationRule.class
+com\dbtraining\reconx\kafka\DlqConsumer.class
 com\dbtraining\reconx\dto\TradeEvent.class
+com\dbtraining\reconx\model\DlqMessage.class
 com\dbtraining\reconx\observability\MdcFilter.class
 com\dbtraining\reconx\kafka\AlertConsumer.class
 com\dbtraining\reconx\exception\GlobalExceptionHandler.class
