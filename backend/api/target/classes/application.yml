@@ -1,0 +1,79 @@
+spring:
+  # TICKET-ADV128 — Kafka producer/consumer defaults. Topics are created at startup
+  # by KafkaTopicsConfig (see com.dbtraining.reconx.kafka.KafkaTopicsConfig).
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP:localhost:9092}
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        spring.json.add.type.headers: false
+    consumer:
+      group-id: reconx-service
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: com.dbtraining.reconx.dto
+        spring.json.use.type.headers: false
+        spring.json.value.default.type: com.dbtraining.reconx.dto.TradeEvent
+
+
+
+spring:
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:dev}
+
+  application:
+    name: reconx-api
+
+  jmx:
+    enabled: true
+
+  jpa:
+    open-in-view: false
+    properties:
+      hibernate:
+        jdbc.time_zone: UTC
+        format_sql: true
+
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.xml
+
+  sql:
+    init:
+      mode: never
+
+  cache:
+    cache-names: instruments,counterparties
+    caffeine:
+      spec: maximumSize=500,expireAfterWrite=5m
+
+# Default JWT configuration
+reconx:
+  security:
+    jwt:
+      secret: "404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970"
+      expiration-minutes: 1440
+      issuer: "reconx-api"
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info, metrics, prometheus, caches
+  endpoint:
+    health:
+      show-details: when-authorized
+      probes:
+        enabled: true
+  metrics:
+    distribution:
+      percentiles-histogram:
+        reconciliation:
+          duration: true
+
+server:
+  port: 8080
+  servlet:
+    context-path: /api

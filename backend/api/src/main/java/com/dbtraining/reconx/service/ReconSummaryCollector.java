@@ -1,7 +1,7 @@
 package com.dbtraining.reconx.service;
 
-import com.dbtraining.reconx.model.ReconResult;
-import com.dbtraining.reconx.model.ReconResult.Status;
+import com.dbtraining.reconx.dto.ReconResult;
+import com.dbtraining.reconx.dto.ReconResult.Status;
 
 import java.util.EnumSet;
 import java.util.Set;

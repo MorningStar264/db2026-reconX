@@ -18,7 +18,7 @@ function onRender(id, phase, actualDuration, baseDuration) {
   console.log(`[Profiler] ${id} ${phase}  actual=${actualDuration.toFixed(2)}ms  base=${baseDuration.toFixed(2)}ms`);
 }
 
-function Dashboard() {
+function DashboardContents() {
   const { trades, isConnected } = useTradeStream();
 
   const portfolioValue = useMemo(
