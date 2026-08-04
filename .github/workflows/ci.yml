@@ -19,6 +19,7 @@ env:
 jobs:
 
   backend-build-and-test:
+  
     runs-on: ubuntu-latest
     services:
       postgres:
@@ -40,6 +41,9 @@ jobs:
           java-version: '25'
           distribution: 'temurin'
           cache: maven
+      - name: Liquibase validate
+        working-directory: backend
+        run: ./mvnw -B liquibase:validate || true    
       - name: Liquibase validate
         working-directory: backend
         run: ./mvnw -B liquibase:validate || true
