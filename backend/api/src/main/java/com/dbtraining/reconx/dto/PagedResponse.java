@@ -3,7 +3,6 @@ package com.dbtraining.reconx.dto;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
-import java.util.function.Function;
 
 public class PagedResponse<T> {
     private final List<T> content;
