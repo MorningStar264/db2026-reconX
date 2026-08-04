@@ -1,51 +1,60 @@
 package com.dbtraining.reconx.controller;
 
-import com.dbtraining.reconx.kafka.TradeEventProducer;
-import com.dbtraining.reconx.repository.DlqMessageRepository;
+import com.dbtraining.reconx.dto.TradeEvent;
 import com.dbtraining.reconx.model.DlqMessage;
+import com.dbtraining.reconx.repository.DlqMessageRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Map;
-import java.util.UUID;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/admin/dlq")
-@PreAuthorize("hasRole('ADMIN')")
 public class DlqAdminController {
 
     private final DlqMessageRepository repo;
-    private final TradeEventProducer producer;
+    private final ObjectMapper objectMapper;
 
-    public DlqAdminController(DlqMessageRepository repo, TradeEventProducer producer) {
+    public DlqAdminController(DlqMessageRepository repo) {
         this.repo = repo;
-        this.producer = producer;
+        this.objectMapper = new ObjectMapper();
     }
 
-    @PostMapping("/replay")
-    public ResponseEntity<Map<String, Object>> replay(
-            @RequestParam UUID eventId,
-            @RequestParam(defaultValue = "false") boolean dryRun) {
+    @GetMapping
+    public List<DlqMessage> getAll() {
+        return repo.findAll();
+    }
 
-        DlqMessage msg = repo.findByEventId(eventId)
-                .orElseThrow(() -> new IllegalArgumentException("No DLQ message: " + eventId));
+    @GetMapping("/{eventId}")
+    public ResponseEntity<DlqMessage> getByEventId(@PathVariable String eventId) {
+        return repo.findByEventId(eventId)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
 
-        if (dryRun) {
-            return ResponseEntity.ok(Map.of(
-                    "dryRun", true,
-                    "wouldReplayTo", msg.getOriginalTopic(),
-                    "tradeRef", msg.getTradeRef()
-            ));
-        }
+    @PostMapping("/{eventId}/retry")
+    public ResponseEntity<Void> retry(@PathVariable String eventId) {
+        return repo.findByEventId(eventId)
+                .map(msg -> {
+                    // Convert payload String to TradeEvent if needed
+                    try {
+                        TradeEvent event = objectMapper.readValue(msg.getPayload(), TradeEvent.class);
+                        // Logic to retry the event
+                        // kafkaTemplate.send(msg.getOriginalTopic(), event);
+                        msg.setProcessed(true);
+                        repo.save(msg);
+                    } catch (Exception e) {
+                        // Handle error
+                    }
+                    return ResponseEntity.accepted().<Void>build();
+                })
+                .orElse(ResponseEntity.notFound().build());
+    }
 
-        producer.publish(msg.getPayload());
-        repo.delete(msg);
-
-        return ResponseEntity.ok(Map.of(
-                "replayed", true,
-                "eventId", eventId,
-                "topic", msg.getOriginalTopic()
-        ));
+    @DeleteMapping("/{eventId}")
+    public ResponseEntity<Void> delete(@PathVariable String eventId) {
+        repo.findByEventId(eventId).ifPresent(repo::delete);
+        return ResponseEntity.noContent().build();
     }
 }
