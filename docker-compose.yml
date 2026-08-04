@@ -1,7 +1,7 @@
 # =============================================================================
-# TICKET-ADV148 — 7-service stack: backend, frontend, postgres, kafka, zookeeper,
+# 7-service stack: backend, frontend, postgres, kafka, zookeeper,
 #                prometheus, grafana (+ optional kafdrop behind "debug" profile)
-# TICKET-ADV152 — Health checks gate dependent services
+# Health checks gate dependent services
 # =============================================================================
 services:
 
