@@ -1,5 +1,5 @@
 # ============================================================================
-# TICKET-ADV147 — React multi-stage build (npm -> nginx)
+# React multi-stage build (npm -> nginx)
 # ============================================================================
 FROM node:22-alpine AS build
 WORKDIR /app

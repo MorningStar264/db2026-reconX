@@ -70,7 +70,15 @@ management:
         reconciliation:
           duration: true
 
+  # TICKET-ADV084 — Enable histogram buckets for reconciliation.duration
+  metrics:
+    distribution:
+      percentiles-histogram:
+        reconciliation:
+          duration: true
+
 server:
   port: 8080
+
   servlet:
     context-path: /api
