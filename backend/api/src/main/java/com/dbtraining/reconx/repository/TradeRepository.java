@@ -19,7 +19,7 @@ public interface TradeRepository
 
     @Query("""
         SELECT t FROM Trade t
-        WHERE t.tradeDate BETWEEN :from AND :to
+        WHERE (t.tradeDate BETWEEN :from AND :to OR (:from IS NULL AND :to IS NULL))
           AND (:status IS NULL OR t.status = :status)
           AND (:counterpartyId IS NULL OR t.counterparty.id = :counterpartyId)
         """)
@@ -30,4 +30,7 @@ public interface TradeRepository
         @Param("counterpartyId") Long counterpartyId,
         Pageable pageable
     );
+
+    // Add this method for the gauge
+    long countByStatus(TradeStatus status);
 }

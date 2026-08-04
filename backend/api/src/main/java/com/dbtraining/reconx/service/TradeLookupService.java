@@ -1,12 +1,14 @@
 package com.dbtraining.reconx.service;
 
-import com.dbtraining.reconx.model.Counterparty;
-import com.dbtraining.reconx.model.Trade;
+import com.dbtraining.reconx.repository.entity.Counterparty;
+import com.dbtraining.reconx.domain.Trade;
 import com.dbtraining.reconx.repository.CounterpartyRepository;
 import com.dbtraining.reconx.repository.TradeRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.NoSuchElementException;
 
+@Service
 public class TradeLookupService {
 
     private final TradeRepository tradeRepo;
@@ -18,9 +20,8 @@ public class TradeLookupService {
     }
 
     public Counterparty counterpartyForTradeRef(String tradeRef) {
-        return tradeRepo.findByRef(tradeRef)
-                .map(Trade::counterpartyId)
-                .flatMap(cpRepo::findById)
+        return tradeRepo.findByTradeRef(tradeRef)
+                .map(Trade::getCounterparty)
                 .orElseThrow(() -> new NoSuchElementException(
                         "No counterparty resolvable for trade " + tradeRef));
     }

@@ -1,12 +1,14 @@
 package com.dbtraining.reconx.repository.entity;
 
+import com.dbtraining.reconx.domain.AssetClass;
+import io.hypersistence.utils.hibernate.type.json.JsonBinaryType;
 import jakarta.persistence.*;
+import org.hibernate.annotations.Type;
 
-/**
- * TICKET-ADV051 — JPA entity Instrument. JSONB metadata column wired via
- * the Hypersistence Utils JsonBinaryType on Postgres; H2 stores it as a
- * plain CLOB via the dialect translation (acceptable for dev).
- */
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+
 @Entity
 @Table(name = "instruments")
 public class Instrument {
@@ -21,21 +23,83 @@ public class Instrument {
     @Column(nullable = false, length = 200)
     private String name;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "asset_class", nullable = false, length = 20)
-    private String assetClass;
+    private AssetClass assetClass;
 
     @Column(nullable = false, length = 3)
     private String currency;
 
-    @Column(length = 12)
-    private String isin;
+    /**
+     * JSONB metadata: tick size, lot size, exchange code, etc.
+     * On H2 (dev profile) this stores as a CLOB; on Postgres it's true JSONB
+     * and is queryable via the @> operator.
+     */
+    @Type(JsonBinaryType.class)
+    @Column(columnDefinition = "jsonb")
+    private Map<String, Object> metadata = new HashMap<>();
 
-    public Instrument() {}
+    // --- Getters and Setters ---
 
-    public Long getId()         { return id; }
-    public String getSymbol()   { return symbol; }
-    public String getName()     { return name; }
-    public String getAssetClass(){ return assetClass; }
-    public String getCurrency() { return currency; }
-    public String getIsin()     { return isin; }
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getSymbol() {
+        return symbol;
+    }
+
+    public void setSymbol(String symbol) {
+        this.symbol = symbol;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public AssetClass getAssetClass() {
+        return assetClass;
+    }
+
+    public void setAssetClass(AssetClass assetClass) {
+        this.assetClass = assetClass;
+    }
+
+    public String getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
+    }
+
+    public Map<String, Object> getMetadata() {
+        return metadata;
+    }
+
+    public void setMetadata(Map<String, Object> metadata) {
+        this.metadata = metadata;
+    }
+
+    // --- equals and hashCode ---
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Instrument other)) return false;
+        return id != null && id.equals(other.id);
+    }
+
+    @Override 
+    public int hashCode() { 
+        return Objects.hash(id); 
+    }
 }

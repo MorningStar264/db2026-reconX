@@ -26,15 +26,30 @@ public class Counterparty {
     @Column(name = "created_at")
     private Instant createdAt;
 
+    // Additional fields for compatibility
+    @Column(length = 50)
+    private String code;
+
+    @Column(length = 50)
+    private String type;
+
     public Counterparty() {}
 
-    public Long getId()           { return id; }
-    public String getName()       { return name; }
-    public String getLeiCode()    { return leiCode; }
-    public String getRegion()     { return region; }
+    // Getters
+    public Long getId() { return id; }
+    public String getName() { return name; }
+    public String getLeiCode() { return leiCode; }
+    public String getRegion() { return region; }
     public Instant getCreatedAt() { return createdAt; }
+    public String getCode() { return code; }
+    public String getType() { return type; }
 
-    public void setName(String name)       { this.name = name; }
-    public void setLeiCode(String lei)     { this.leiCode = lei; }
-    public void setRegion(String region)   { this.region = region; }
+    // Setters
+    public void setId(Long id) { this.id = id; }
+    public void setName(String name) { this.name = name; }
+    public void setLeiCode(String leiCode) { this.leiCode = leiCode; }
+    public void setRegion(String region) { this.region = region; }
+    public void setCreatedAt(Instant createdAt) { this.createdAt = createdAt; }
+    public void setCode(String code) { this.code = code; }
+    public void setType(String type) { this.type = type; }
 }

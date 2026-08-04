@@ -32,37 +32,28 @@ public class ReconController {
 
     public ReconController(ReconBreakRepository breaks) { this.breaks = breaks; }
 
-    @PostMapping("/run")
-    @Operation(summary = "Trigger a reconciliation job (async)")
-    public ResponseEntity<Map<String, String>> runRecon(@Valid @RequestBody ReconRunRequest req) {
-        // TODO(TICKET-ADV068): generate a jobId, write a row to recon_jobs, and
-        //   return 202 Accepted with {"jobId": ..., "status": "QUEUED"}. A
-        //   worker (Day 6 / Kafka consumer) picks the job up asynchronously.
-        throw new UnsupportedOperationException("TICKET-ADV068");
-    }
-
-   
     @GetMapping("/jobs/{jobId}/results")
     @Operation(summary = "Get results for a recon job")
     public List<ReconBreak> results(@PathVariable String jobId) {
-    // The trainer-copy stub returns all current open breaks.
-         return breaks.findAll();
-}
+        // The trainer-copy stub returns all current open breaks.
+        return breaks.findAll();
+    }
 
     @PutMapping("/results/{id}/resolve")
-@Operation(summary = "Mark a recon break as RESOLVED with a note")
-public ResponseEntity<ReconBreak> resolve(@PathVariable Long id,
-                                          @RequestBody Map<String, String> body) {
-    ReconBreak rb = breaks.findById(id)
-            .orElseThrow(() -> new TradeNotFoundException("recon_break " + id));
-    rb.resolve(body.getOrDefault("note", "manually resolved"));
-    return ResponseEntity.ok(breaks.save(rb));
-}
+    @Operation(summary = "Mark a recon break as RESOLVED with a note")
+    public ResponseEntity<ReconBreak> resolve(@PathVariable Long id,
+                                              @RequestBody Map<String, String> body) {
+        ReconBreak rb = breaks.findById(id)
+                .orElseThrow(() -> new TradeNotFoundException("recon_break " + id));
+        rb.resolve(body.getOrDefault("note", "manually resolved"));
+        return ResponseEntity.ok(breaks.save(rb));
+    }
+
     @PostMapping("/run")
-@Operation(summary = "Trigger a reconciliation job (async)")
-public ResponseEntity<Map<String, String>> runRecon(@Valid @RequestBody ReconRunRequest req) {
-    String jobId = UUID.randomUUID().toString();
-    // In the full impl this writes a row to recon_jobs and a worker picks it up.
-    return ResponseEntity.accepted().body(Map.of("jobId", jobId, "status", "QUEUED"));
-}
+    @Operation(summary = "Trigger a reconciliation job (async)")
+    public ResponseEntity<Map<String, String>> runRecon(@Valid @RequestBody ReconRunRequest req) {
+        String jobId = UUID.randomUUID().toString();
+        // In the full impl this writes a row to recon_jobs and a worker picks it up.
+        return ResponseEntity.accepted().body(Map.of("jobId", jobId, "status", "QUEUED"));
+    }
 }
