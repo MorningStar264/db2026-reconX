@@ -6,6 +6,7 @@ C:\Users\ANISH TRIPATHI\OneDrive\Desktop\reconX\db2026-reconX\backend\api\src\ma
 C:\Users\ANISH TRIPATHI\OneDrive\Desktop\reconX\db2026-reconX\backend\api\src\main\java\com\dbtraining\reconx\config\OpenApiConfig.java
 C:\Users\ANISH TRIPATHI\OneDrive\Desktop\reconX\db2026-reconX\backend\api\src\main\java\com\dbtraining\reconx\controller\AuditController.java
 C:\Users\ANISH TRIPATHI\OneDrive\Desktop\reconX\db2026-reconX\backend\api\src\main\java\com\dbtraining\reconx\controller\AuthController.java
+C:\Users\ANISH TRIPATHI\OneDrive\Desktop\reconX\db2026-reconX\backend\api\src\main\java\com\dbtraining\reconx\controller\DlqAdminController.java
 C:\Users\ANISH TRIPATHI\OneDrive\Desktop\reconX\db2026-reconX\backend\api\src\main\java\com\dbtraining\reconx\controller\ReconController.java
 C:\Users\ANISH TRIPATHI\OneDrive\Desktop\reconX\db2026-reconX\backend\api\src\main\java\com\dbtraining\reconx\controller\TradeController.java
 C:\Users\ANISH TRIPATHI\OneDrive\Desktop\reconX\db2026-reconX\backend\api\src\main\java\com\dbtraining\reconx\domain\AssetClass.java
@@ -28,12 +29,14 @@ C:\Users\ANISH TRIPATHI\OneDrive\Desktop\reconX\db2026-reconX\backend\api\src\ma
 C:\Users\ANISH TRIPATHI\OneDrive\Desktop\reconX\db2026-reconX\backend\api\src\main\java\com\dbtraining\reconx\exception\TradeNotFoundException.java
 C:\Users\ANISH TRIPATHI\OneDrive\Desktop\reconX\db2026-reconX\backend\api\src\main\java\com\dbtraining\reconx\kafka\AlertConsumer.java
 C:\Users\ANISH TRIPATHI\OneDrive\Desktop\reconX\db2026-reconX\backend\api\src\main\java\com\dbtraining\reconx\kafka\AuditEventConsumer.java
+C:\Users\ANISH TRIPATHI\OneDrive\Desktop\reconX\db2026-reconX\backend\api\src\main\java\com\dbtraining\reconx\kafka\DlqConsumer.java
 C:\Users\ANISH TRIPATHI\OneDrive\Desktop\reconX\db2026-reconX\backend\api\src\main\java\com\dbtraining\reconx\kafka\KafkaErrorHandlerConfig.java
 C:\Users\ANISH TRIPATHI\OneDrive\Desktop\reconX\db2026-reconX\backend\api\src\main\java\com\dbtraining\reconx\kafka\KafkaTopicsConfig.java
 C:\Users\ANISH TRIPATHI\OneDrive\Desktop\reconX\db2026-reconX\backend\api\src\main\java\com\dbtraining\reconx\kafka\ReconciliationConsumer.java
 C:\Users\ANISH TRIPATHI\OneDrive\Desktop\reconX\db2026-reconX\backend\api\src\main\java\com\dbtraining\reconx\kafka\TradeEventProducer.java
 C:\Users\ANISH TRIPATHI\OneDrive\Desktop\reconX\db2026-reconX\backend\api\src\main\java\com\dbtraining\reconx\model\BondTrade.java
 C:\Users\ANISH TRIPATHI\OneDrive\Desktop\reconX\db2026-reconX\backend\api\src\main\java\com\dbtraining\reconx\model\DerivativeTrade.java
+C:\Users\ANISH TRIPATHI\OneDrive\Desktop\reconX\db2026-reconX\backend\api\src\main\java\com\dbtraining\reconx\model\DlqMessage.java
 C:\Users\ANISH TRIPATHI\OneDrive\Desktop\reconX\db2026-reconX\backend\api\src\main\java\com\dbtraining\reconx\model\EquityTrade.java
 C:\Users\ANISH TRIPATHI\OneDrive\Desktop\reconX\db2026-reconX\backend\api\src\main\java\com\dbtraining\reconx\model\FXTrade.java
 C:\Users\ANISH TRIPATHI\OneDrive\Desktop\reconX\db2026-reconX\backend\api\src\main\java\com\dbtraining\reconx\model\Money.java
@@ -52,6 +55,7 @@ C:\Users\ANISH TRIPATHI\OneDrive\Desktop\reconX\db2026-reconX\backend\api\src\ma
 C:\Users\ANISH TRIPATHI\OneDrive\Desktop\reconX\db2026-reconX\backend\api\src\main\java\com\dbtraining\reconx\repository\AppUserRepository.java
 C:\Users\ANISH TRIPATHI\OneDrive\Desktop\reconX\db2026-reconX\backend\api\src\main\java\com\dbtraining\reconx\repository\AuditLogRepository.java
 C:\Users\ANISH TRIPATHI\OneDrive\Desktop\reconX\db2026-reconX\backend\api\src\main\java\com\dbtraining\reconx\repository\CounterpartyRepository.java
+C:\Users\ANISH TRIPATHI\OneDrive\Desktop\reconX\db2026-reconX\backend\api\src\main\java\com\dbtraining\reconx\repository\DlqMessageRepository.java
 C:\Users\ANISH TRIPATHI\OneDrive\Desktop\reconX\db2026-reconX\backend\api\src\main\java\com\dbtraining\reconx\repository\entity\AppUser.java
 C:\Users\ANISH TRIPATHI\OneDrive\Desktop\reconX\db2026-reconX\backend\api\src\main\java\com\dbtraining\reconx\repository\entity\AuditLogEntry.java
 C:\Users\ANISH TRIPATHI\OneDrive\Desktop\reconX\db2026-reconX\backend\api\src\main\java\com\dbtraining\reconx\repository\entity\Counterparty.java
@@ -68,6 +72,7 @@ C:\Users\ANISH TRIPATHI\OneDrive\Desktop\reconX\db2026-reconX\backend\api\src\ma
 C:\Users\ANISH TRIPATHI\OneDrive\Desktop\reconX\db2026-reconX\backend\api\src\main\java\com\dbtraining\reconx\service\ReconciliationEngine.java
 C:\Users\ANISH TRIPATHI\OneDrive\Desktop\reconX\db2026-reconX\backend\api\src\main\java\com\dbtraining\reconx\service\ReconSummary.java
 C:\Users\ANISH TRIPATHI\OneDrive\Desktop\reconX\db2026-reconX\backend\api\src\main\java\com\dbtraining\reconx\service\ReconSummaryCollector.java
+C:\Users\ANISH TRIPATHI\OneDrive\Desktop\reconX\db2026-reconX\backend\api\src\main\java\com\dbtraining\reconx\service\TradeAggregator.java
 C:\Users\ANISH TRIPATHI\OneDrive\Desktop\reconX\db2026-reconX\backend\api\src\main\java\com\dbtraining\reconx\service\TradeAnalyticsService.java
 C:\Users\ANISH TRIPATHI\OneDrive\Desktop\reconX\db2026-reconX\backend\api\src\main\java\com\dbtraining\reconx\service\TradeHistoryService.java
 C:\Users\ANISH TRIPATHI\OneDrive\Desktop\reconX\db2026-reconX\backend\api\src\main\java\com\dbtraining\reconx\service\TradeLookupService.java
