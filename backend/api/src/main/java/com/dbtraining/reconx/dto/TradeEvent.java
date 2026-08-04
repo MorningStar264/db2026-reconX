@@ -29,4 +29,39 @@ public record TradeEvent(
     public enum EventType {
         TRADE_CREATED, TRADE_UPDATED, TRADE_CANCELLED
     }
+
+    // Constructor with default values
+    public TradeEvent {
+        if (eventId == null) {
+            eventId = UUID.randomUUID();
+        }
+        if (timestamp == null) {
+            timestamp = Instant.now();
+        }
+    }
+
+    // Convenience constructor for creation events
+    public TradeEvent(String tradeRef, EventType eventType, String actor) {
+        this(UUID.randomUUID(), tradeRef, eventType, Instant.now(), actor, null, null);
+    }
+
+    // Convenience constructor with before/after state
+    public TradeEvent(String tradeRef, EventType eventType, String actor, String before, String after) {
+        this(UUID.randomUUID(), tradeRef, eventType, Instant.now(), actor, before, after);
+    }
+
+    // Helper method to get eventId as String (for consumers)
+    public String getEventIdAsString() {
+        return eventId != null ? eventId.toString() : null;
+    }
+
+    // Helper method to get before state safely
+    public String getBeforeState() {
+        return before;
+    }
+
+    // Helper method to get after state safely
+    public String getAfterState() {
+        return after;
+    }
 }

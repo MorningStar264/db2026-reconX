@@ -1,5 +1,5 @@
 # ============================================================================
-# TICKET-ADV146 — Spring Boot Dockerfile (multi-stage Maven -> JRE 25 slim)
+# Spring Boot Dockerfile (multi-stage Maven -> JRE 21 slim)
 #
 # Stage 1: build the JAR with Temurin JDK 25 + Maven.
 # Stage 2: copy ONLY the JAR onto a slim JRE image.
